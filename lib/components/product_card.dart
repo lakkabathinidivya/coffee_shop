@@ -1,30 +1,30 @@
+import 'package:coffee_shop/components/product_model.dart';
 import 'package:coffee_shop/screens/product_detailed_screen.dart';
 import 'package:flutter/material.dart';
 
-import '../colors/color_resources.dart';
+import '../utils/color_resources.dart';
 
 class ProductCard extends StatelessWidget {
-  // final bool isFavorite;
-  // final ProductItem item;
-  // final Function()? onUpdate;
+  final Product model;
+  final bool? isDelete;
+  final VoidCallback callback;
+
   const ProductCard({
     super.key,
-    // required this.onUpdate,
-    // required this.isFavorite,
-    // required this.item,
+    this.isDelete = false,
+    required this.callback,
+    required this.model,
   });
 
   @override
   Widget build(BuildContext context) {
     return DecoratedBox(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        gradient: const LinearGradient(
-          colors: <Color>[
-            Color.fromRGBO(62, 63, 75, 1),
-            Color.fromRGBO(8, 8, 9, 1)
-          ],
-        ),
+        borderRadius: BorderRadius.circular(25),
+        gradient: const LinearGradient(colors: <Color>[
+          Color.fromRGBO(62, 63, 75, 0.363),
+          Color.fromRGBO(8, 8, 9, 1)
+        ], begin: Alignment.topLeft, end: Alignment.bottomRight),
       ),
       child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -34,22 +34,25 @@ class ProductCard extends StatelessWidget {
               child: InkWell(
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return ProductDetailedScreen();
+                    return ProductDetailedScreen(
+                      model: model,
+                    );
                   }));
                 },
                 child: Stack(
                   children: [
                     Card(
+                      color: const Color.fromRGBO(62, 63, 75, 0.363),
                       margin: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 10),
+                          vertical: 13, horizontal: 11),
                       clipBehavior: Clip.antiAliasWithSaveLayer,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20)),
-                      child: Image.network(
-                        'https://images.pexels.com/photos/2396220/pexels-photo-2396220.jpeg',
-                        height: 150,
+                      child: Image.asset(
+                        model.image,
+                        height: 149,
                         width: 150,
-                        fit: BoxFit.fill,
+                        fit: BoxFit.fitWidth,
                       ),
                     ),
                     Positioned(
@@ -57,10 +60,8 @@ class ProductCard extends StatelessWidget {
                         top: 10,
                         child: Align(
                           alignment: Alignment.bottomRight,
-                          // heightFactor: 0.5,
-                          // widthFactor: 0.5,
                           child: Container(
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               borderRadius: BorderRadius.only(
                                 topRight: Radius.circular(20.0),
                                 bottomLeft: Radius.circular(15.0),
@@ -74,17 +75,17 @@ class ProductCard extends StatelessWidget {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Icon(
+                                    const Icon(
                                       Icons.star,
                                       color: ColorResources.lightOrange,
                                       size: 15,
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 5,
                                     ),
                                     Text(
-                                      '4.3',
-                                      style: TextStyle(
+                                      model.rating.toString(),
+                                      style: const TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.w500),
                                     )
@@ -96,61 +97,62 @@ class ProductCard extends StatelessWidget {
                 ),
               ),
             ),
-            const Expanded(
-              flex: 0,
-              child: Padding(
-                padding: EdgeInsets.only(left: 15),
-                child: Text(
-                  'Latto',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
-                      color: Colors.white),
-                ),
+            Padding(
+              padding: const EdgeInsets.only(left: 15),
+              child: Text(
+                model.title,
+                style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.white),
               ),
             ),
-            const Flexible(
-              flex: 0,
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                child: Text(
-                  '${68.78}',
-                  style: TextStyle(color: Colors.white),
-                ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 15,
+              ),
+              child: Text(
+                model.description,
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 10,
+                    fontWeight: FontWeight.w300,
+                    letterSpacing: 1),
               ),
             ),
-            Expanded(
-              flex: 0,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Flexible(
-                      child: Text(
-                        '\$ 78.89',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                            color: ColorResources.lightOrange),
-                      ),
+            const SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    child: Text(
+                      '\$ ${model.price}',
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: ColorResources.lightOrange),
                     ),
-                    DecoratedBox(
+                  ),
+                  GestureDetector(
+                    onTap: callback,
+                    child: DecoratedBox(
                       decoration: BoxDecoration(
                           color: ColorResources.lightOrange,
                           borderRadius: BorderRadius.circular(10)),
-                      child: const Padding(
-                        padding: EdgeInsets.all(5.0),
-                        child: Icon(
-                          Icons.add,
-                          // : Icons.favorite_outline_outlined,
-                          size: 15,
-                          color: ColorResources.whiteColor,
-                        ),
-                      ),
+                      child: Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Icon(
+                            isDelete == true ? Icons.delete : Icons.favorite,
+                            size: 15,
+                            color: ColorResources.whiteColor,
+                          )),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             )
           ]),
