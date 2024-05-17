@@ -55,10 +55,8 @@ class _ProductDetailedScreenState extends State<ProductDetailedScreen> {
             quantity: 1);
       }
       setState(() {});
-    // ignore: empty_catches
-    } catch (e) {
-      
-    }
+      // ignore: empty_catches
+    } catch (e) {}
   }
 
   Product? _selectedProduct;
@@ -396,7 +394,7 @@ class _ProductDetailedScreenState extends State<ProductDetailedScreen> {
                 if (bagProvider.isAlreadyInBag(
                     getCupSize(selectedImageIndex), widget.model.id))
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    padding: const EdgeInsets.only(right: 20),
                     child: Column(
                       children: [
                         GestureDetector(

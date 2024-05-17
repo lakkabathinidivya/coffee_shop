@@ -78,7 +78,7 @@ class _BagScreenState extends State<BagScreen> {
                   child: Column(
                     children: [
                       SizedBox(
-                          height: 450,
+                          height: MediaQuery.of(context).size.height * 0.48,
                           child: ListView.builder(
                               itemCount: cartList.items.length,
                               itemBuilder: (context, index) {
@@ -224,9 +224,7 @@ class _BagScreenState extends State<BagScreen> {
                                   ),
                                 );
                               })),
-
-                     
-
+                      const Spacer(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -244,7 +242,6 @@ class _BagScreenState extends State<BagScreen> {
                                   fontWeight: FontWeight.w500)),
                         ],
                       ),
-
                       const SizedBox(
                         height: 10,
                       ),
@@ -264,7 +261,7 @@ class _BagScreenState extends State<BagScreen> {
                         ],
                       ),
                       const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 20),
+                        padding: EdgeInsets.symmetric(vertical: 10),
                         child: Divider(
                           color: ColorResources.whiteColor,
                         ),
